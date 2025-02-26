@@ -8,7 +8,6 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 
-
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 json_path = os.path.join(BASE_DIR, "static", "json", "network.json")
 hdf5 = os.path.join(BASE_DIR, "static", "hdf5", "weights.hdf5")
