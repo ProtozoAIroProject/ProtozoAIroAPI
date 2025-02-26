@@ -28,30 +28,24 @@ def predict():
         if not img_data_64:
             return jsonify({"error": "Nenhuma imagem fornecida"}), 400
         
-        # Decodificando a imagem base64
         img_bytes = base64.b64decode(img_data_64)
         
-        # Usando PIL para abrir a imagem
         img = Image.open(io.BytesIO(img_bytes))
 
-        # Convertendo a imagem para o formato RGB e redimensionando
         img = img.convert("RGB")
         img = img.resize((64, 64))
 
-        # Convertendo a imagem para um array NumPy e normalizando
         image_array = np.array(img) / 255.0
-        image_array = image_array.reshape(-1, 64, 64, 3)  # Ajustando as dimensões
+        image_array = image_array.reshape(-1, 64, 64, 3)
 
-        # Carregando o modelo
         with open(json_path, 'r', encoding='utf-8') as json_file:
             json_saved_model = json_file.read()
             network_loaded = tf.keras.models.model_from_json(json_saved_model)
             network_loaded.load_weights(hdf5)
             network_loaded.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 
-        # Fazendo a previsão
         previsao = network_loaded.predict(image_array)
-        result = 'Parasitized' if np.argmax(previsao) == 0 else 'Uninfected'
+        result = 'parasitada' if np.argmax(previsao) == 0 else 'não parasitada'
 
         return jsonify({'predict': result})
 
