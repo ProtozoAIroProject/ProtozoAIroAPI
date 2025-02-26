@@ -16,7 +16,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return jsonify({"Home": "Vc está na Home"})
+     return render_template("index.html")
 
 @app.route("/predict", methods=["POST"])
 def predict():
